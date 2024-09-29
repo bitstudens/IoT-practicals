@@ -74,9 +74,9 @@ import BlynkLib
 import RPi.GPIO as GPIO
 import BlynkTimer
 
-BLYNK_AUTH_TOKEN = 'r0qBQnVShdvwsY4PLtDPLV3jv6iwrpgt' #Update this with your auth token
+BLYNK_AUTH_TOKEN = 'PlQKGS2VuFVy3ewHgaCZla-2V-ef-h4h' #Update this with your auth token
 
-led1 = 11
+led1 = 12
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(led1, GPIO.OUT)
 
