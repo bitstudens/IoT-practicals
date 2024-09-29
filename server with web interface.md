@@ -111,5 +111,6 @@ if __name__ == "__main__":
 ```
 python app.py
 ```
-
+Access the Web Interface
+Open your web browser and navigate to http://<Raspberry-Pi-IP>:5000/. For local access, use http://localhost:5000/.
 Good Luck
