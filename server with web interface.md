@@ -9,7 +9,7 @@ This project allows you to control a servo motor using a web interface built wit
 - [Connection Diagram](#connection-diagram)
 - [Installation](#installation)
 - [Running the Application](#running-the-application)
-- [Usage](#usage)
+
 
 ## Requirements
 
@@ -35,7 +35,7 @@ Make sure your Raspberry Pi is powered off before making connections. Connect th
 - Power (VCC)       5V Power (Pin 2 or 4)
 - Ground (GND)      Ground (Pin 6)
 
-### Required Libraries
+## Installation
 
 ```bash
 sudo apt update
@@ -44,7 +44,7 @@ sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
 ```
 
-### Python Code
+## Running the Application
 
 ```python
 # Your Python code goes here
