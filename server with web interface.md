@@ -47,7 +47,7 @@ sudo systemctl start pigpiod
 ## Running the Application
 
 ```python
-# Your Python code goes here
+
 from flask import Flask, render_template, request
 import pigpio
 
