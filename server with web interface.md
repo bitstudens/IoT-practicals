@@ -107,6 +107,41 @@ if __name__ == "__main__":
 </html>
 ```
 
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servo Motor Control</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 500px; margin: auto; padding: 20px; }
+        .control-form { display: flex; flex-direction: column; align-items: center; }
+        .radio-group { margin: 10px 0; }
+        button { padding: 10px 20px; font-size: 1.2em; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Servo Motor Control</h1>
+        <form class="control-form" method="POST">
+            <label for="angle">Select Servo Angle:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="angle" value="0" required> 0°</label>
+                <label><input type="radio" name="angle" value="45"> 45°</label>
+                <label><input type="radio" name="angle" value="90"> 90°</label>
+                <label><input type="radio" name="angle" value="135"> 135°</label>
+                <label><input type="radio" name="angle" value="180"> 180°</label>
+            </div>
+            <button type="submit">Move Servo</button>
+        </form>
+    </div>
+</body>
+</html>
+
+```
+
 ### Run the program
 ```
 python app.py
