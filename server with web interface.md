@@ -28,7 +28,7 @@ This project allows you to control a servo motor using a web interface built wit
 
 Make sure your Raspberry Pi is powered off before making connections. Connect the servo motor to the Raspberry Pi GPIO as follows:
 
-### Connection Diagram
+## Connection Diagram
 - Servo Motor       Raspberry Pi
 
 - Signal Pin        GPIO 18 (Pin 12)
