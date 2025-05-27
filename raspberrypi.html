@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspberry Pi: An Interactive Infographic Overview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Hero: Large Text (HTML/CSS). Goal: Inform.
+        - What is it/Problems: Text + Unicode, HTML Cards. Goal: Inform. Method: HTML/CSS.
+        - GPIO Pins: Donut Chart (Chart.js Canvas). Goal: Compare/Inform. Interaction: Tooltips. Justification: Visual breakdown. Library: Chart.js. NO SVG.
+        - Ports: Interactive HTML/CSS diagram. Goal: Organize/Inform. Interaction: Click for details. Justification: Exploration. Method: HTML/CSS + JS. NO SVG.
+        - Wireless: HTML Cards. Goal: Inform. Method: HTML/CSS.
+        - Openness: HTML Cards. Goal: Inform. Method: HTML/CSS.
+        - OS Install: HTML/CSS List/Timeline. Goal: Organize/Inform. Justification: Clear steps. Method: HTML/CSS. NO SVG/Mermaid.
+        - Projects: HTML/CSS Grid with Unicode icons. Goal: Inform/Inspire. Method: HTML/CSS.
+        - Tips: HTML List. Goal: Inform. Method: HTML/CSS.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #FFF8E1; color: #4A4A4A; }
+        .chart-container { position: relative; width: 100%; max-width: 450px; margin-left: auto; margin-right: auto; height: 320px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; max-height: 400px;} }
+        .section-title { color: #FF6F61; }
+        .card { background-color: #FFFFFF; border-left: 5px solid #00A0B0; }
+        .highlight-stat { color: #FF6F61; font-weight: bold; font-size: 2.5rem; }
+        .port-item { cursor: pointer; transition: transform 0.2s ease-in-out; }
+        .port-item:hover { transform: translateY(-5px); }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #FFFFFF; margin: 10% auto; padding: 24px; border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); position: relative; }
+        .close-button { position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; color: #888; }
+        .close-button:hover { color: #4A4A4A; }
+        .step-item { border-left-width: 4px; }
+    </style>
+</head>
+<body class="antialiased leading-relaxed">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50 hidden md:block">
+        <div class="container mx-auto px-6 py-3 flex justify-center space-x-6">
+            <a href="#hero" class="text-gray-700 hover:text-[#FF6F61] font-medium">Intro</a>
+            <a href="#hardware" class="text-gray-700 hover:text-[#FF6F61] font-medium">Hardware</a>
+            <a href="#openness" class="text-gray-700 hover:text-[#FF6F61] font-medium">Openness</a>
+            <a href="#os-install" class="text-gray-700 hover:text-[#FF6F61] font-medium">OS Install</a>
+            <a href="#projects" class="text-gray-700 hover:text-[#FF6F61] font-medium">Projects</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="py-16 md:py-24 bg-gradient-to-br from-[#FFD700] to-[#FF6F61]">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">An Introduction to Raspberry Pi</h1>
+            <p class="text-xl md:text-2xl text-white opacity-90">Your Tiny, Powerful, Credit-Card Sized Computer!</p>
+        </div>
+    </section>
+
+    <section id="what-is-it" class="py-12 md:py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold section-title mb-4 text-center">What is a Raspberry Pi?</h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-10">This section introduces the Raspberry Pi: a low-cost, credit-card-sized single-board computer. It was developed to make computing accessible and to promote computer science education. Think of it as a mini-PC ready for your projects!</p>
+            <div class="text-center mb-12">
+                <span class="highlight-stat">💳 Credit-Card Sized</span>
+                <p class="text-lg mt-2">All its main components are on one single circuit board!</p>
+            </div>
+
+            <h3 class="text-2xl md:text-3xl font-semibold section-title mb-8 text-center">What Problems Does It Solve?</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Accessibility</h4>
+                    <p>Provides an affordable way to own and experiment with a functional computer.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Learning Platform</h4>
+                    <p>Designed for hands-on learning of programming (Python, Scratch) and electronics via GPIO pins.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Demystifying Tech</h4>
+                    <p>See the "guts" of a computer and understand how parts work together.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Versatile Projects</h4>
+                    <p>Small, low-power, perfect for robotics, home automation, media centers, and more.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hardware" class="py-12 md:py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold section-title mb-10 text-center">Hardware Deep Dive: The Core of Innovation</h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-12">Let's explore the physical features of a Raspberry Pi. This section details the crucial GPIO pins for connecting electronics and the various ports for peripherals. Understanding these components is key to unlocking the Pi's potential.</p>
+
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold text-[#00A0B0] mb-3">GPIO Pins: Gateway to Electronics</h3>
+                    <p class="mb-4">The <strong>40-pin General Purpose Input/Output (GPIO)</strong> header is a key feature, allowing interaction with electronic components. Pins can send signals (Output), receive signals (Input), or provide power and ground.</p>
+                    <p class="text-sm text-orange-600 font-medium mb-4">⚠️ Caution: Incorrect GPIO connections can damage your Pi. Always follow diagrams carefully!</p>
+                    <p>The chart below gives an illustrative breakdown of how these 40 pins are typically allocated.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="gpioPinChart"></canvas>
+                </div>
+            </div>
+
+            <h3 class="text-2xl md:text-3xl font-semibold text-[#00A0B0] mt-16 mb-8 text-center">Ports: Connecting to the World</h3>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-10">Raspberry Pi includes various ports for connecting peripherals. Click on each port icon below to learn more about its function. (Based on Raspberry Pi 4 Model B).</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 text-center">
+                <div onclick="showModal('usb')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">🔌</span> <p class="mt-2 font-medium">USB Ports</p>
+                </div>
+                <div onclick="showModal('ethernet')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">🌐</span> <p class="mt-2 font-medium">Ethernet</p>
+                </div>
+                <div onclick="showModal('hdmi')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">📺</span> <p class="mt-2 font-medium">HDMI</p>
+                </div>
+                <div onclick="showModal('audio')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">🎧</span> <p class="mt-2 font-medium">Audio/Video</p>
+                </div>
+                <div onclick="showModal('csi')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">📸</span> <p class="mt-2 font-medium">Camera (CSI)</p>
+                </div>
+                <div onclick="showModal('dsi')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">💻</span> <p class="mt-2 font-medium">Display (DSI)</p>
+                </div>
+                <div onclick="showModal('microsd')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">💾</span> <p class="mt-2 font-medium">microSD Slot</p>
+                </div>
+                <div onclick="showModal('power')" class="port-item p-4 bg-white rounded-lg shadow-md hover:shadow-xl border-b-4 border-[#FFD700]">
+                    <span class="text-4xl">⚡</span> <p class="mt-2 font-medium">Power Input</p>
+                </div>
+            </div>
+            
+            <h3 class="text-2xl font-semibold text-[#00A0B0] mt-16 mb-6 text-center">Wireless Connectivity</h3>
+            <div class="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">📶 Wi-Fi</h4>
+                    <p>Most newer models have built-in Wi-Fi for wireless network connections.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">🔗 Bluetooth</h4>
+                    <p>Typically included for connecting wireless peripherals or other Bluetooth devices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="openness" class="py-12 md:py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold section-title mb-10 text-center">Embracing Openness: Software & Community</h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-12">"Open Architecture" means designs are public, allowing anyone to understand, modify, and build. Raspberry Pi champions this through its software, hardware information access, a vibrant community, and inherent extensibility, fostering global collaboration and innovation.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Open Source Software</h4>
+                    <p>Raspberry Pi OS is based on Debian Linux. Many tools and packages are open source, allowing free access to code for inspection and modification.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Hardware Information</h4>
+                    <p>Extensive documentation and schematics are provided for many hardware aspects, enabling deeper understanding of the board's workings.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Community-Driven</h4>
+                    <p>A massive global community contributes projects, software, and tutorials, embodying the collaborative spirit of open systems.</p>
+                </div>
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <h4 class="text-xl font-semibold text-[#00A0B0] mb-2">Extensibility</h4>
+                    <p>The design encourages adding custom hardware (like HATs) and software, fueling innovation and personalized projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="os-install" class="py-12 md:py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold section-title mb-10 text-center">Getting Started: Bringing Your Pi to Life</h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-12">To function, your Raspberry Pi needs an operating system (OS). The recommended choice is Raspberry Pi OS. This section outlines the key steps to install it using the official Raspberry Pi Imager tool, preparing your microSD card to boot up your Pi.</p>
+            
+            <h3 class="text-xl font-semibold text-[#00A0B0] mb-3">What you'll need:</h3>
+            <ul class="list-disc list-inside mb-8 space-y-1 text-lg columns-2 sm:columns-3 max-w-3xl mx-auto">
+                <li>Raspberry Pi</li>
+                <li>microSD card (16GB+ rec.)</li>
+                <li>microSD card reader</li>
+                <li>Computer (PC/Mac/Linux)</li>
+                <li>Pi Power supply</li>
+                <li>Monitor & HDMI cable</li>
+                <li>USB Keyboard & Mouse</li>
+            </ul>
+
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="step-item border-[#FF6F61] p-4 bg-white rounded-md shadow"><strong>Step 1:</strong> Download & Install Raspberry Pi Imager from raspberrypi.com.</div>
+                <div class="step-item border-[#FFD700] p-4 bg-white rounded-md shadow"><strong>Step 2:</strong> Insert microSD card into your computer. Backup any data!</div>
+                <div class="step-item border-[#00A0B0] p-4 bg-white rounded-md shadow"><strong>Step 3:</strong> Run Imager. Choose OS (Raspberry Pi OS recommended).</div>
+                <div class="step-item border-[#FF6F61] p-4 bg-white rounded-md shadow"><strong>Step 4 (Optional):</strong> Use Advanced Options (⚙️) to pre-configure Wi-Fi, SSH, user.</div>
+                <div class="step-item border-[#FFD700] p-4 bg-white rounded-md shadow"><strong>Step 5:</strong> Choose your microSD card as storage. Double-check it's the correct one!</div>
+                <div class="step-item border-[#00A0B0] p-4 bg-white rounded-md shadow"><strong>Step 6:</strong> Click WRITE. Confirm data erasure. Process takes 10-30+ mins.</div>
+                <div class="step-item border-[#FF6F61] p-4 bg-white rounded-md shadow"><strong>Step 7:</strong> Eject card, insert into Pi. Connect peripherals, then power. Boot up!</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-12 md:py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold section-title mb-10 text-center">Unleash Your Creativity: Project Ideas</h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-12">The Raspberry Pi is a launchpad for countless projects. Whether you're into coding, electronics, or just making cool stuff, there's something for everyone. Here are a few ideas to spark your imagination!</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card p-6 rounded-lg shadow-lg text-center"> <span class="text-4xl">💻</span> <h4 class="text-xl font-semibold text-[#00A0B0] my-2">Learn to Code</h4> <p>Python, Scratch, Java, C++.</p> </div>
+                <div class="card p-6 rounded-lg shadow-lg text-center"> <span class="text-4xl">💡</span> <h4 class="text-xl font-semibold text-[#00A0B0] my-2">Electronics Fun</h4> <p>Control LEDs, motors, sensors.</p> </div>
+                <div class="card p-6 rounded-lg shadow-lg text-center"> <span class="text-4xl">🎮</span> <h4 class="text-xl font-semibold text-[#00A0B0] my-2">Retro Gaming</h4> <p>Play classic video games.</p> </div>
+                <div class="card p-6 rounded-lg shadow-lg text-center"> <span class="text-4xl">🎬</span> <h4 class="text-xl font-semibold text-[#00A0B0] my-2">Media Center</h4> <p>Kodi/Plex for movies & music.</p> </div>
+                <div class="card p-6 rounded-lg shadow-lg text-center"> <span class="text-4xl">🏠</span> <h4 class="text-xl font-semibold text-[#00A0B0] my-2">Home Automation</h4> <p>Control lights and appliances.</p> </div>
+                <div class="card p-6 rounded-lg shadow-lg text-center"> <span class="text-4xl">🤖</span> <h4 class="text-xl font-semibold text-[#00A0B0] my-2">Build Robots</h4> <p>Create your own moving marvels.</p> </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tips" class="py-12 md:py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold section-title mb-10 text-center">Quick Tips for Success</h2>
+            <p class="text-lg text-center max-w-3xl mx-auto mb-12">Starting your Raspberry Pi journey is exciting! Here are a few pointers to help you get the most out of your experience and navigate any initial hurdles.</p>
+            <ul class="max-w-2xl mx-auto space-y-4">
+                <li class="flex items-start p-4 bg-white rounded-md shadow"><span class="text-2xl mr-3 text-[#FF6F61]">🚀</span><div><strong class="text-[#00A0B0]">Start Simple:</strong> Don't try everything at once. Pick a small project.</div></li>
+                <li class="flex items-start p-4 bg-white rounded-md shadow"><span class="text-2xl mr-3 text-[#FF6F61]">📚</span><div><strong class="text-[#00A0B0]">Follow Tutorials:</strong> Many great resources online, start with raspberrypi.com.</div></li>
+                <li class="flex items-start p-4 bg-white rounded-md shadow"><span class="text-2xl mr-3 text-[#FF6F61]">🤝</span><div><strong class="text-[#00A0B0]">Join the Community:</strong> Forums, Reddit (r/raspberry_pi) for help and ideas.</div></li>
+                <li class="flex items-start p-4 bg-white rounded-md shadow"><span class="text-2xl mr-3 text-[#FF6F61]">💡</span><div><strong class="text-[#00A0B0]">Be Patient:</strong> Learning takes time. Troubleshooting is part of the fun!</div></li>
+                <li class="flex items-start p-4 bg-white rounded-md shadow"><span class="text-2xl mr-3 text-[#FF6F61]">🛡️</span><div><strong class="text-[#00A0B0]">Protect Your Pi:</strong> Consider a case to prevent accidental damage.</div></li>
+            </ul>
+        </div>
+    </section>
+
+    <footer class="py-8 text-center bg-[#4A4A4A] text-gray-300">
+        <p>&copy; <span id="currentYear"></span> Raspberry Pi Interactive Infographic. Happy Tinkering!</p>
+    </footer>
+
+    <div id="portInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="text-2xl font-semibold section-title mb-4">Port Information</h3>
+            <p id="modalDescription" class="text-lg"></p>
+        </div>
+    </div>
+
+<script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    const portData = {
+        usb: { title: "USB Ports", description: "Typically 2 USB 2.0 and 2 USB 3.0 ports (on RPi 4). Used for keyboards, mice, USB drives, webcams. USB 3.0 offers faster data transfer." },
+        ethernet: { title: "Ethernet Port (RJ45)", description: "For wired network connection (Gigabit Ethernet on RPi 4). Provides stable and fast internet." },
+        hdmi: { title: "HDMI Ports", description: "RPi 4 has 2 micro HDMI ports for up to two monitors. Older models usually have one standard HDMI. Outputs video and audio." },
+        audio: { title: "Audio/Video Jack (3.5mm)", description: "4-pole jack for stereo audio and composite video output (for older TVs without HDMI)." },
+        csi: { title: "Camera Serial Interface (CSI)", description: "Flat connector for official Raspberry Pi Camera Module or compatible cameras." },
+        dsi: { title: "Display Serial Interface (DSI)", description: "Flat connector for official Raspberry Pi Touchscreen Display or compatible displays." },
+        microsd: { title: "microSD Card Slot", description: "Crucial! OS and files are stored here. Pi has no built-in storage." },
+        power: { title: "Power Input", description: "Modern Pis (RPi 4) use USB-C. Older models use micro USB. Requires a specific power supply." }
+    };
+
+    const modal = document.getElementById('portInfoModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+
+    function showModal(portKey) {
+        if (portData[portKey]) {
+            modalTitle.textContent = portData[portKey].title;
+            modalDescription.textContent = portData[portKey].description;
+            modal.style.display = "block";
+        }
+    }
+
+    function closeModal() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    function wrapLabels(labels, maxLength) {
+        return labels.map(label => {
+            if (typeof label === 'string' && label.length > maxLength) {
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + word).length > maxLength && currentLine.length > 0) {
+                        lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                }
+                lines.push(currentLine.trim());
+                return lines;
+            }
+            return label;
+        });
+    }
+    
+    const gpioPinChartCtx = document.getElementById('gpioPinChart').getContext('2d');
+    const gpioLabels = ['Power Pins (5V, 3.3V)', 'Ground Pins (GND)', 'General Purpose I/O', 'Special Function (I2C, SPI, UART ID_EEPROM)'];
+    new Chart(gpioPinChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: wrapLabels(gpioLabels, 16),
+            datasets: [{
+                label: 'GPIO Pin Allocation (40-pin header)',
+                data: [4, 8, 26, 2], // Approximate: 2x5V, 2x3.3V; ~8 GND; ~2 Special (ID); Rest GPIO
+                backgroundColor: ['#FF6F61', '#4A4A4A', '#00A0B0', '#FFD700'],
+                borderColor: '#FFF8E1',
+                borderWidth: 3,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#4A4A4A',
+                        font: { size: 12 },
+                        boxWidth: 15,
+                        padding: 15
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            }
+                            return label;
+                        },
+                        label: function(context) {
+                            return `${context.parsed} pins`;
+                        }
+                    },
+                    backgroundColor: '#4A4A4A',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    padding: 10,
+                    cornerRadius: 4
+                }
+            }
+        }
+    });
+
+    // Simple scrollspy for nav (optional)
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('section');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 70) { // 70 for nav height + buffer
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('text-[#FF6F61]', 'font-bold');
+            link.classList.add('text-gray-700');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('text-[#FF6F61]', 'font-bold');
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
