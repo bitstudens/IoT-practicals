@@ -21,8 +21,7 @@ This project demonstrates how to blink an LED using Python on a Raspberry Pi 3B 
 > 💡 GPIO 17 corresponds to **physical pin 11** on the Raspberry Pi 3B.
 >![Pin Layout](https://raw.githubusercontent.com/bitstudens/IoT-practicals/main/pin_layout.png)
 >![Design](https://raw.githubusercontent.com/bitstudens/IoT-practicals/main/design.jpeg)
-> 
-
+> [Watch video](https://github.com/bitstudens/IoT-practicals/blob/main/overview.mp4)
 ### Pin Reference
 
 | Physical Pin | BCM GPIO | Description |
