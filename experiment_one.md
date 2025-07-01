@@ -19,6 +19,9 @@ This project demonstrates how to blink an LED using Python on a Raspberry Pi 3B 
 | Shorter (Cathode) | Resistor → GND (e.g., Pin 6) |
 
 > 💡 GPIO 17 corresponds to **physical pin 11** on the Raspberry Pi 3B.
+>![Pin Layout](https://raw.githubusercontent.com/bitstudens/IoT-practicals/main/pin_layout.png)
+>![Design](https://raw.githubusercontent.com/bitstudens/IoT-practicals/main/design.jpeg)
+> 
 
 ### Pin Reference
 
