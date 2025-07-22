@@ -34,7 +34,9 @@ source blynk_env/bin/activate
 ### 3. Install Required Python Libraries
 
 ```bash
-pip install blynklib RPi.GPIO
+--pip install blynklib RPi.GPIO
+pip3 install RPi.GPIO
+pip3 install blynk-library-python
 ```
 
 ### 4. Connect the LED to GPIO
@@ -60,33 +62,35 @@ pip install blynklib RPi.GPIO
 Create a file named `led_control.py` and paste:
 
 ```python
-import blynklib
-import RPi.GPIO as GPIO
+import BlynkLib
 import time
+import RPi.GPIO as GPIO
 
-BLYNK_AUTH = 'YOUR_AUTH_TOKEN_HERE'
+# Replace with your own Blynk Auth Token
+BLYNK_AUTH = 'YourAuthTokenHere'
 
+# Setup GPIO
+LED_PIN = 17
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(17, GPIO.OUT)
-GPIO.output(17, GPIO.LOW)
+GPIO.setup(LED_PIN, GPIO.OUT)
 
-blynk = blynklib.Blynk(BLYNK_AUTH)
+# Connect to the Blynk 2.0 server using non-SSL (port 80)
+blynk = BlynkLib.Blynk(BLYNK_AUTH, server="blynk.cloud", port=80)
 
-@blynk.handle_event('write V1')
-def v1_write_handler(pin, value):
-    print(f"V1 value: {value}")
-    if int(value[0]) == 1:
-        GPIO.output(17, GPIO.HIGH)
-    else:
-        GPIO.output(17, GPIO.LOW)
+# Handle virtual pin V0 writes from the Blynk app
+@blynk.VIRTUAL_WRITE(0)
+def v0_write_handler(value):
+    print(f"Received value from V0: {value}")
+    GPIO.output(LED_PIN, int(value[0]))
 
+print("Connecting to Blynk Cloud...")
 try:
     while True:
         blynk.run()
         time.sleep(0.1)
+
 except KeyboardInterrupt:
-    print("Interrupted by user.")
-finally:
+    print("\nExiting. Cleaning up GPIO...")
     GPIO.cleanup()
 ```
 
