@@ -71,14 +71,23 @@ pip install Blynk
 
 ```
 import BlynkLib
-import RPi.GPIO as GPIO
 import BlynkTimer
 
-BLYNK_AUTH_TOKEN = 'PlQKGS2VuFVy3ewHgaCZla-2V-ef-h4h' #Update this with your auth token
+try:
+    import RPi.GPIO as GPIO  # type: ignore[import-not-found]
+    HAS_GPIO = True
+except ModuleNotFoundError:
+    GPIO = None
+    HAS_GPIO = False
 
-led1 = 12
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(led1, GPIO.OUT)
+BLYNK_AUTH_TOKEN = '' #Update this with your auth token
+
+LED1_PIN = 12
+if HAS_GPIO:
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(LED1_PIN, GPIO.OUT)
+else:
+    print("RPi.GPIO not installed. Running in terminal-only mode.")
 
 
 x = 20
@@ -88,18 +97,20 @@ blynk = BlynkLib.Blynk(BLYNK_AUTH_TOKEN)
 # Led control through V0 virtual pin
 @blynk.on("V0")
 def v0_write_handler(value):
-#    global led_switch
-    if int(value[0]) is not 0:
-        GPIO.output(led1, GPIO.HIGH)
-        print('LED1 HIGH')
+    if int(value[0]) != 0:
+        if HAS_GPIO:
+            GPIO.output(LED1_PIN, GPIO.HIGH)
+        print('V0 -> ON')
     else:
-        GPIO.output(led1, GPIO.LOW)
-        print('LED1 LOW')
+        if HAS_GPIO:
+            GPIO.output(LED1_PIN, GPIO.LOW)
+        print('V0 -> OFF')
 
 #function to sync the data from virtual pins
 @blynk.on("connected")
 def blynk_connected():
-    print("Raspberry Pi Connected to New Blynk") 
+    print("Connected to Blynk cloud")
+    blynk.sync_virtual(0)
 
 while True:
     blynk.run()
