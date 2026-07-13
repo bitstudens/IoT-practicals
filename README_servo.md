@@ -13,8 +13,6 @@ The sequence repeats until the program is stopped with `Ctrl+C`.
 
 ## Wiring diagram
 
-Place `raspberry_pi_servo_pin11_wiring.png` in the same directory as this README file.
-
 ![Raspberry Pi mini servo wiring using physical pin 11](raspberry_pi_servo_pin11_wiring.svg)
 
 ## Connections
